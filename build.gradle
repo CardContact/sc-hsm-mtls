@@ -1,0 +1,55 @@
+/*
+ * Build file
+ */
+
+plugins {
+	id 'application'
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+group = 'de.cardcontact'
+
+// Revision is set by Jenkins when building the module
+if (!project.hasProperty("revision")) {
+	ext.revision = "0"
+}
+
+ext {
+	specversion = '1.0'
+}
+
+version = ext.specversion + '.' + revision
+println "Version " + group + ":" + name + ":" + version
+
+
+// Use the public IVY repo by default unless overwritten by property
+if (!project.hasProperty("ivySharedRepoURL")) {
+	ext.ivySharedRepoURL = "https://www.openscdp.org/ivy"
+}
+
+
+repositories {
+	// Use Maven Central for resolving dependencies.
+	mavenCentral()
+
+	// Use our public or interal IVY repo for our own artefacts
+	ivy {
+		url ivySharedRepoURL
+		layout 'ivy'
+		allowInsecureProtocol = true
+	}
+}
+
+
+dependencies {
+	implementation 'org.openscdp:sc-hsm-provider:latest.integration'
+	implementation 'org.openscdp:ocf-ui:latest.integration'
+	implementation 'org.bouncycastle:bcprov-jdk18on:1.72'
+	implementation 'org.slf4j:slf4j-simple:2.0.9'
+}
+
+application {
+	mainClassName = "de.cardcontact.mtls.MTLSClient"
+}

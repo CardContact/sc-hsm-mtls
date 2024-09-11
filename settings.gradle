@@ -1,0 +1,15 @@
+/*
+ * Project global settings
+ */
+
+rootProject.name = 'sc-hsm-mtls'
+
+dependencyResolutionManagement {
+	versionCatalogs {
+		libs {
+			library('slf4j', 'org.slf4j:slf4j-api:2.0.9')
+		}
+	}
+}
+
+if (!hasProperty("jenkins") && file('../sc-hsm-jceprovider').exists()) includeBuild('../sc-hsm-jceprovider')
